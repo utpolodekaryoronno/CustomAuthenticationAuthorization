@@ -5,11 +5,11 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <h2 class="mb-4 text-center">Register Student</h2>
+        <h2 class="mb-4 text-center">Register Teacher</h2>
 
          <div class="card mb-3">
             <div class="card-body">
-                <form action="{{ route('register.store') }}" method="POST">
+                <form action="{{ route('register.store.teacher') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Name</label>
@@ -48,7 +48,7 @@
                 </form>
 
                 <p class="text-center mt-3">
-                    Already have an account? <a href="{{ route('login') }}">Login</a>
+                    Already have an account? <a href="{{ route('login.teacher') }}">Login</a>
                 </p>
             </div>
         </div>

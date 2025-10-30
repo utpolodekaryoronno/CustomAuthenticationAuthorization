@@ -7,15 +7,15 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <img src="{{ Auth::guard('student')->user()->photo ?? asset('assets/image/default-profile.png') }}" alt="Profile Image" class="rounded-circle border mb-2" width="150" height="150">
-                <h3>Welcome, {{ Auth::guard('student')->user()->name }}</h3>
-                <p>Email: {{ Auth::guard('student')->user()->email }}</p>
+                <img src="{{ Auth::guard('staff')->user()->photo ?? asset('assets/image/default-profile.png') }}" alt="Profile Image" class="rounded-circle border mb-2" width="150" height="150">
+                <h3>Welcome, {{ Auth::guard('staff')->user()->name }}</h3>
+                <p>Email: {{ Auth::guard('staff')->user()->email }}</p>
 
                 <p class="mt-3">Your Role:
-                    <strong>{{ Auth::guard('student')->user()->role ?? 'student' }}</strong>
+                    <strong>{{ Auth::guard('staff')->user()->role ?? 'student' }}</strong>
                 </p>
 
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout.staff') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-danger">Logout</button>
                 </form>

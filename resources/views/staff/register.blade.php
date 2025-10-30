@@ -5,11 +5,11 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <h2 class="mb-4 text-center">Register Student</h2>
+        <h2 class="mb-4 text-center">Register Staff</h2>
 
          <div class="card mb-3">
             <div class="card-body">
-                <form action="{{ route('register.store') }}" method="POST">
+                <form action="{{ route('register.store.staff') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Name</label>
@@ -27,6 +27,16 @@
                         <label class="form-label">Phone</label>
                         <input type="text" name="phone" class="form-control" value="{{ old('phone') }}">
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select name="role" class="form-select">
+                            <option>Select Role</option>
+                            <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>Manager</option>
+                            <option value="accountant" {{ old('role') == 'accountant' ? 'selected' : '' }}>Accountant</option>
+                            <option value="librarian" {{ old('role') == 'librarian' ? 'selected' : '' }}>Librarian</option>
+                        </select>
+                    </div>
+
                     <div class="mb-3 position-relative">
                         <label class="form-label">Password</label>
                         <input type="password" name="password" class="form-control pe-5" id="password">
@@ -48,7 +58,7 @@
                 </form>
 
                 <p class="text-center mt-3">
-                    Already have an account? <a href="{{ route('login') }}">Login</a>
+                    Already have an account? <a href="{{ route('login.staff') }}">Login</a>
                 </p>
             </div>
         </div>

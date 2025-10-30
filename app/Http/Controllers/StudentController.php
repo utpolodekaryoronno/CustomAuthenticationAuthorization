@@ -43,8 +43,6 @@ class StudentController extends Controller
             'role'     => 'student', // default role
         ]);
 
-        // Auth::login($student);
-
         return redirect()->route('login')->with('success', 'Registration Successful!');
     }
 

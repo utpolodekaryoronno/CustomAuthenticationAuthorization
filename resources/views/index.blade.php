@@ -3,8 +3,8 @@
 @section('title', 'Home')
 
 @section('content')
-    <div class="text-center">
-        <h1>Welcome to Custom Authentication & Authorization</h1>
+    <div class="text-center pt-5">
+        <h1>Welcome to Custom <br> Authentication & Authorization</h1>
         <p class="lead mt-3">Laravel 12 Breeze-style Authentication System</p>
 
         @guest
