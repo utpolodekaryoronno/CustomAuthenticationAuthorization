@@ -77,7 +77,66 @@ class StudentController extends Controller
     // 👤 Profile Page
     public function profile()
     {
-        return view('student.profile');
+        $student = Auth::guard('student')->user();
+        return view('student.profile', compact('student'));
+    }
+    // ✏️ Edit Profile
+    public function editProfile()
+    {
+        $student = Auth::guard('student')->user();
+        return view('student.profileEdit', compact('student'));
+    }
+     // ✏️ Update Profile
+    public function updateProfile(Request $request)
+    {
+         $request->validate([
+            'name'      => 'required|string|max:100',
+            'phone'     => 'required|numeric',
+            'photo'     => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+        $student = Auth::guard('student')->user();
+
+        $fileName = $student->photo; // keep old photo by default
+
+        // File upload (if new file provided)
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            $oldPath = public_path('media/student/' . $student->photo);
+            if ($student->photo && file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+
+            // Upload new photo
+            $fileName = $this->fileUpload($request->file('photo'), 'media/student/');
+        }
+
+        // Update Auth student
+        $student ->update([
+            'name'     => $request->name,
+            'phone'    => $request->phone,
+            'photo'    => $fileName,
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Profile Updated Successful!');
+    }
+
+    // 🚪 Delete Account
+    public function deleteProfile(Request $request)
+    {
+        $student = Auth::guard('student')->user();
+
+        // Delete photo if exists
+        $oldPath = public_path('media/student/' . $student->photo);
+        if ($student->photo && file_exists($oldPath)) {
+            unlink($oldPath);
+        }
+
+        Auth::guard('student')->logout();
+
+        $student->delete();
+
+        return redirect()->route('home')->with('success', 'Account Deleted successfully!');
     }
 
     // 🚪 Logout

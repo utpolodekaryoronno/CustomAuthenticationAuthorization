@@ -14,6 +14,7 @@ class Student extends User
         'phone',
         'password',
         'role',
+        'photo',
     ];
 
     protected $hidden = [
