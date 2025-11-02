@@ -18,7 +18,7 @@ class LoggedInMiddleware
     {
 
         if(Auth::guard('student')->user()){
-            return redirect()->route('profile');
+            return redirect()->route('dashboard');
         }
 
         return $next($request);

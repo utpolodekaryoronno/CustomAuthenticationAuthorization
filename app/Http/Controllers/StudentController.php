@@ -64,8 +64,7 @@ class StudentController extends Controller
 
 
         if(Auth::guard('student')->attempt($credentials)){
-            // $request->session()->regenerate();
-            return redirect()->route('profile')->with('success', 'Login Successful!');
+            return redirect()->route('dashboard')->with('success', 'Login Successful!');
         }
 
 
@@ -74,12 +73,20 @@ class StudentController extends Controller
         ])->onlyInput('email');
     }
 
+    // 👤 Dashboard Page
+    public function Dashboard()
+    {
+        $student = Auth::guard('student')->user();
+        return view('student.dashboard', compact('student'));
+    }
+
     // 👤 Profile Page
     public function profile()
     {
         $student = Auth::guard('student')->user();
         return view('student.profile', compact('student'));
     }
+
     // ✏️ Edit Profile
     public function editProfile()
     {

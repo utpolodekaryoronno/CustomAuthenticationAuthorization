@@ -18,7 +18,7 @@ class LoginCheck
     {
         // echo "<h1>Login Check Middleware Applied</h1>";
 
-        if(Auth::guard('student')->user() == null){
+        if(Auth::guard('student')->user() === null){
             return redirect()->route('login');
         }
         return $next($request);

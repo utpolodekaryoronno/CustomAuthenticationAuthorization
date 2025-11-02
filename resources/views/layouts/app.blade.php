@@ -6,6 +6,8 @@
     <title>@yield('title', 'Laravel Auth')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{-- chart js  --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
@@ -14,25 +16,55 @@
         <div class="container">
             <a class="logo" href="{{ url('/') }}"><img src="{{ asset('assets/image/logo.png') }}" alt="" style="height: 60px"></a>
             <ul class="navbar-nav ms-auto">
-                @guest
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                @else
-                    <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}">Profile</a></li>
+                 @if (Auth::guard('student')->user() && Auth::guard('student')->user()->role === 'student')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button class="btn btn-link nav-link" type="submit">Logout</button>
+                            <button class="btn btn-danger" type="submit">Logout</button>
                         </form>
                     </li>
-                @endguest
+                @else
+                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                @endif
+
+                {{-- @if(Auth::guard('staff')->user() && in_array(Auth::guard('staff')->user()->role, ['manager', 'librarian']))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('staff.dashboard') }}">Staff Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{{ route('logout.staff') }}" method="POST">
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Logout</button>
+                        </form>
+                    </li>
+                @elseif(Auth::guard('staff')->user() && Auth::guard('staff')->user()->role === 'accountant')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('accountant.dashboard') }}">Accountant Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{{ route('logout.staff') }}" method="POST">
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item"><a class="nav-link" href="{{ route('login.staff') }}">Staff Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('register.staff') }}">Staff Register</a></li>
+                @endif --}}
+
+
             </ul>
         </div>
     </nav>
 
-    <div class="container">
+    <section>
         @yield('content')
-    </div>
+    </section>
+
 
 
     {{-- script js  --}}
@@ -41,9 +73,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    {{-- sweetalert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Toastr JS -->
-
     <script>
         toastr.options = {
             "closeButton": true,
@@ -72,6 +106,34 @@
             const type = target.getAttribute('type') === 'password' ? 'text' : 'password';
             target.setAttribute('type', type);
             this.classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
+
+     {{-- Dynamic Delete Confirmation with SweetAlert --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".delete-form").forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault(); // stop form submission
+
+                    let message = form.getAttribute("data-message") || "Are you sure you want to delete this Account?";
+
+                    Swal.fire({
+                        title: "Confirm Delete",
+                        text: message,
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "Cancel"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // finally submit if confirmed
+                        }
+                    });
+                });
             });
         });
     </script>

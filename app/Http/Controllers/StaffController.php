@@ -60,9 +60,18 @@ class StaffController extends Controller
         Auth::guard('staff')->attempt($credentials);
 
 
-        if(Auth::guard('staff')->attempt($credentials)){
-            return redirect()->route('profile.staff')->with('success', 'Login Successful!');
+
+        if (Auth::guard('staff')->attempt($credentials)) {
+
+            $staff = Auth::guard('staff')->user();
+
+            if ($staff->role === 'accountant') {
+                return redirect()->route('accountant.dashboard')->with('success', 'Login Successful!');
+            }
+
+            return redirect()->route('staff.dashboard')->with('success', 'Login Successful!');
         }
+
 
 
         return back()->withErrors([
@@ -75,6 +84,87 @@ class StaffController extends Controller
     {
         return view('staff.profile');
     }
+     // ✏️ Edit Profile
+    public function editStaff()
+    {
+        $staff = Auth::guard('staff')->user();
+        return view('staff.profileEdit', compact('staff'));
+    }
+     // ✏️ Update Profile
+    public function updateStaff(Request $request)
+    {
+         $request->validate([
+            'name'      => 'required|string|max:100',
+            'phone'     => 'required|numeric',
+            'photo'     => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+        $staff = Auth::guard('staff')->user();
+
+        $fileName = $staff->photo; // keep old photo by default
+
+        // File upload (if new file provided)
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            $oldPath = public_path('media/staff/' . $staff->photo);
+            if ($staff->photo && file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+
+            // Upload new photo
+            $fileName = $this->fileUpload($request->file('photo'), 'media/staff/');
+        }
+
+        // Update Auth Staff
+        $staff ->update([
+            'name'     => $request->name,
+            'phone'    => $request->phone,
+            'photo'    => $fileName,
+        ]);
+
+        return redirect()->route('profile.staff')->with('success', 'Profile Updated Successful!');
+    }
+
+
+    // 👤 Accountant Deshboard
+    public function Accountant()
+    {
+        if (Auth::guard('staff')->user()->role !== 'accountant') {
+            return redirect()->route('staff.dashboard');
+        }
+
+        return view('staff.accountant.dashboard');
+    }
+
+    // 👤 Staff Deshboard
+    public function StaffDashboard()
+    {
+        if (Auth::guard('staff')->user()->role === 'accountant') {
+            return redirect()->route('accountant.dashboard');
+        }
+
+        return view('staff.dashboard');
+    }
+
+
+    // 🚪 Delete Account
+    public function deleteStaff(Request $request)
+    {
+        $staff = Auth::guard('staff')->user();
+
+        // Delete photo if exists
+        $oldPath = public_path('media/staff/' . $staff->photo);
+        if ($staff->photo && file_exists($oldPath)) {
+            unlink($oldPath);
+        }
+
+        Auth::guard('staff')->logout();
+
+        $staff->delete();
+
+        return redirect()->route('home')->with('success', 'Account Deleted successfully!');
+    }
+
 
     // 🚪 Logout
     public function logoutStaff(Request $request)

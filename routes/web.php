@@ -15,9 +15,11 @@ Route::post('/register', [StudentController::class, 'register'])->name('register
 Route::get('/login', [StudentController::class, 'showLogin'])->name('login')->Middleware('loggedinMiddleware');
 Route::post('/login', [StudentController::class, 'login'])->name('login.store');
 
+Route::get('/dashboard', [StudentController::class, 'Dashboard'])->name('dashboard')->Middleware('login-checking');
 Route::get('/profile', [StudentController::class, 'profile'])->name('profile')->Middleware('login-checking');
 Route::get('/profile/edit', [StudentController::class, 'editProfile'])->name('profile.edit')->Middleware('login-checking');
 Route::put('/profile/edit', [StudentController::class, 'updateProfile'])->name('profile.update');
+
 Route::delete('/profile/delete', [StudentController::class, 'deleteProfile'])->name('profile.delete');
 
 Route::post('/logout', [StudentController::class, 'logout'])->name('logout');
@@ -34,12 +36,22 @@ Route::post('/staff/register', [StaffController::class, 'registerStaff'])->name(
 Route::get('/staff/login', [StaffController::class, 'showLoginStaff'])->name('login.staff')->Middleware('loggedinMiddlewareStaff');
 Route::post('/staff/login', [StaffController::class, 'loginStaff'])->name('login.store.staff');
 
+
+Route::get('/staff/accountant', [StaffController::class, 'Accountant'])->name('accountant.dashboard')->Middleware('RoleChecker');
+Route::get('/staff/dashboard', [StaffController::class, 'StaffDashboard'])->name('staff.dashboard')->Middleware('RoleChecker');
+
+
 Route::get('/staff/profile', [StaffController::class, 'profileStaff'])->name('profile.staff')->Middleware('login-checking-staff');
+Route::get('/staff/edit', [StaffController::class, 'editStaff'])->name('edit.staff')->Middleware('login-checking-staff');
+Route::put('/staff/edit', [StaffController::class, 'updateStaff'])->name('update.staff')->Middleware('login-checking-staff');
+
+Route::delete('/profile/delete/staff', [StaffController::class, 'deleteStaff'])->name('delete.staff');
 
 Route::post('/staff/logout', [StaffController::class, 'logoutStaff'])->name('logout.staff');
 Route::get('/staff/logout', function () {
     return redirect()->route('login.staff');
 });
+
 
 
 // teacher Routes

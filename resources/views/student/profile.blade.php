@@ -6,6 +6,10 @@
 <div class="col-md-8 mx-auto">
     <div class="card">
         <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <a href="{{ route('dashboard') }}" class="btn btn-dark">Back</a>
+                <a href="{{ route('profile.edit') }}" class="btn btn-success">Edit Profile</a>
+            </div>
             <div class="d-flex justify-content-between">
                 <div>
                     @if ($student->photo)
@@ -26,8 +30,8 @@
                     </form>
                 </div>
                 <div class="d-flex flex-column justify-content-between align-items-end">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-success">Edit Profile</a>
-                    <form action="{{ route('profile.delete') }}" method="POST" style="display: inline-block;">
+                    <span class="hidden"></span>
+                    <form action="{{ route('profile.delete') }}" method="POST" style="display: inline-block;" class="delete-form"  data-message="Are you sure you want to delete this Account?" >
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger mt-2">Delete Account</
