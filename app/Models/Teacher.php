@@ -13,6 +13,8 @@ class Teacher extends User
         'email',
         'phone',
         'password',
+        'role',
+        'photo',
     ];
 
     protected $hidden = [

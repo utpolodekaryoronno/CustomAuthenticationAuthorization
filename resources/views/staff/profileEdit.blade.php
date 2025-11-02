@@ -3,6 +3,11 @@
 @section('title', 'Profile Edit')
 
 @section('content')
+<style>
+    body {
+        background-color: #EEF2F7;
+    }
+</style>
 <div class="row justify-content-center">
     <div class="card col-md-6 mx-auto">
         <div class="d-flex justify-content-between card-header align-items-center pt-3 pb-3 w-100">

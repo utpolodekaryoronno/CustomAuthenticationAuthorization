@@ -61,7 +61,12 @@ Route::post('/teacher/register', [TeacherController::class, 'registerTeacher'])-
 Route::get('/teacher/login', [TeacherController::class, 'showLoginTeacher'])->name('login.teacher')->Middleware('loggedinMiddlewareTeacher');
 Route::post('/teacher/login', [TeacherController::class, 'loginTeacher'])->name('login.store.teacher');
 
+
+Route::get('/teacher/dashboard', [TeacherController::class, 'dashboardTeacher'])->name('dashboard.teacher')->Middleware('login-checking-teacher');
 Route::get('/teacher/profile', [TeacherController::class, 'profileTeacher'])->name('profile.teacher')->Middleware('login-checking-teacher');
+Route::get('/teacher/edit', [TeacherController::class, 'EditTeacher'])->name('edit.teacher')->Middleware('login-checking-teacher');
+Route::put('/teacher/edit', [TeacherController::class, 'UpdateTeacher'])->name('update.teacher')->Middleware('login-checking-teacher');
+Route::delete('/teacher/delete', [TeacherController::class, 'DeleteTeacher'])->name('delete.teacher');
 
 Route::post('/teacher/logout', [TeacherController::class, 'logoutTeacher'])->name('logout.teacher');
 Route::get('/teacher/logout', function () {

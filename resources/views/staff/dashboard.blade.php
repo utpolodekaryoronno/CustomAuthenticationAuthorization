@@ -7,6 +7,7 @@
     <style>
         body {
             overflow-x: hidden;
+            background-color: #EEF2F7;
         }
         .sidebar {
             min-height: 100vh;
@@ -53,31 +54,38 @@
 
             <!-- Main Content -->
             <div class="col-md-10 p-0">
-                <!-- Top Navbar -->
-                <nav class="navbar navbar-light bg-light shadow-sm px-3">
-                    <div class="ms-auto dropdown">
-                        <a class="dropdown-toggle text-decoration-none" href="#" data-bs-toggle="dropdown">
-                           @if (Auth::guard('staff')->user()->photo)
-                               <img src="{{ asset('media/staff/' . Auth::guard('staff')->user()->photo) }}" alt="" class="rounded-circle" height="30" width="30">
-                            @else
-                               <img src="{{ asset('assets/image/default-profile.png') }}" alt="" class="rounded-circle" height="30" width="30">
-                           @endif
+                <div class="d-flex justify-content-between align-items-center mt-4">
 
-                           {{ Auth::guard('staff')->user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('profile.staff') }}">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="mb-2 mx-3">
-                                <form action="{{ route('logout.staff') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger">Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                    <h2 class="px-3">Welcome, {{ Auth::guard('staff')->user()->name }} 👋</h2>
+
+                    <!-- Top Navbar -->
+                    <nav class="navbar px-3">
+                        <div class="ms-auto dropdown">
+                            <a class="dropdown-toggle text-decoration-none d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                            @if (Auth::guard('staff')->user()->photo)
+                                <img src="{{ asset('media/staff/' . Auth::guard('staff')->user()->photo) }}" alt="avatar" class="rounded-circle me-2" height="30" width="30">
+                                @else
+                                <img src="{{ asset('assets/image/default-profile.png') }}" alt="avatar" class="rounded-circle me-2" height="30" width="30">
+                            @endif
+
+                            <span>{{ Auth::guard('staff')->user()->name }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('profile.staff') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="px-3 py-2">
+                                    <form action="{{ route('logout.staff') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger w-100">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                </div>
+
 
                 <!-- Stats Cards -->
                 <div class="container mt-4">

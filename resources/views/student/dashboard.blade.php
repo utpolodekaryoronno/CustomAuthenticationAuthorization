@@ -4,7 +4,7 @@
     <style>
         body {
             overflow-x: hidden;
-             background: #f4f6f9;
+             background: #EEF2F7;
         }
         .sidebar {
             min-height: 100vh;

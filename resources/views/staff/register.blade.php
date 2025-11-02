@@ -3,6 +3,11 @@
 @section('title', 'Register')
 
 @section('content')
+<style>
+    body {
+        background-color: #EEF2F7;
+    }
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">

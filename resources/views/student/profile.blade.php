@@ -3,6 +3,11 @@
 @section('title', 'Profile')
 
 @section('content')
+<style>
+    body {
+        background-color: #EEF2F7;
+    }
+</style>
 <div class="col-md-8 mx-auto">
     <div class="card">
         <div class="card-body">
