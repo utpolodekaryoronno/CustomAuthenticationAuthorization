@@ -62,8 +62,11 @@ class StudentController extends Controller
 
         Auth::guard('student')->attempt($credentials);
 
+        // ✅ Check if "Remember Me" is checked
+        $remember = $request->has('remember');
 
-        if(Auth::guard('student')->attempt($credentials)){
+
+        if(Auth::guard('student')->attempt($credentials, $remember)){
             return redirect()->route('dashboard')->with('success', 'Login Successful!');
         }
 

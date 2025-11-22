@@ -13,10 +13,13 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    {{-- style css  --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: #dbdee0;">
-        <div class="container">
+    <header class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: #FFF;">
+        <div class="container-fluid">
             <a class="logo" href="{{ url('/') }}"><img src="{{ asset('assets/image/logo.png') }}" alt="" style="height: 60px"></a>
             <ul class="navbar-nav ms-auto">
                  @if (Auth::guard('student')->user() && Auth::guard('student')->user()->role === 'student')
@@ -33,36 +36,9 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                 @endif
-
-                {{-- @if(Auth::guard('staff')->user() && in_array(Auth::guard('staff')->user()->role, ['manager', 'librarian']))
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('staff.dashboard') }}">Staff Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('logout.staff') }}" method="POST">
-                            @csrf
-                            <button class="btn btn-danger" type="submit">Logout</button>
-                        </form>
-                    </li>
-                @elseif(Auth::guard('staff')->user() && Auth::guard('staff')->user()->role === 'accountant')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('accountant.dashboard') }}">Accountant Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('logout.staff') }}" method="POST">
-                            @csrf
-                            <button class="btn btn-danger" type="submit">Logout</button>
-                        </form>
-                    </li>
-                @else
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login.staff') }}">Staff Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register.staff') }}">Staff Register</a></li>
-                @endif --}}
-
-
             </ul>
         </div>
-    </nav>
+    </header>
 
     <section>
         @yield('content')
