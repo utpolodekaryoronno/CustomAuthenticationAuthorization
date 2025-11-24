@@ -5,7 +5,7 @@
 @section('content')
     <div class="container py-2">
         <div class="row justify-content-center">
-            <div class="col-md-5 col-lg-6">
+            <div class="col-md-5">
 
                 <h2 class="mb-4 text-center fw-bold text-primary">Login Student</h2>
 
@@ -59,3 +59,4 @@
         </div>
     </div>
 @endsection
+
