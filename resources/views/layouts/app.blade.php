@@ -18,7 +18,7 @@
 
 </head>
 <body>
-    <header class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: #FFF;">
+    {{-- <header class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: #FFF;">
         <div class="container-fluid">
             <a class="logo" href="{{ url('/') }}"><img src="{{ asset('assets/image/logo.png') }}" alt="" style="height: 60px"></a>
             <ul class="navbar-nav ms-auto">
@@ -38,7 +38,310 @@
                 @endif
             </ul>
         </div>
+    </header> --}}
+
+    {{-- <header class="navbar navbar-expand-lg navbar-light shadow-sm mb-4" style="background-color: #fff;">
+        <div class="container-fluid">
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('assets/image/logo.png') }}" alt="School Logo" style="height: 60px;">
+            </a>
+
+            <!-- Right Menu -->
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <!-- GUEST: Not logged in -->
+                @if(!auth()->check() && !auth('teacher')->check() && !auth('staff')->check() && !auth('admin')->check())
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary px-4 me-2" href="{{ route('portal') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary px-4" href="{{ route('register') }}">Register</a>
+                    </li>
+                @endif
+
+                <!-- STUDENT LOGGED IN (default guard: web) -->
+                @if(auth()->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="{{ auth()->user()->photo
+                                ? asset('media/student/'.auth()->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle me-2" width="40" height="40" style="object-fit: cover;">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth()->user()->name }}</span>
+                            <small class="text-success ms-2">(Student)</small>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="{{ route('dashboard') }}">
+                                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile') }}">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                <!-- TEACHER LOGGED IN -->
+                @if(auth('teacher')->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="{{ auth('teacher')->user()->photo
+                                ? asset('media/teacher/'.auth('teacher')->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle me-2" width="40" height="40" style="object-fit: cover;">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth('teacher')->user()->name }}</span>
+                            <small class="text-primary ms-2">(Teacher)</small>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="{{ route('dashboard.teacher') }}">
+                                <i class="fas fa-chalkboard-teacher me-2"></i> Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.teacher') }}">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout.teacher') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                <!-- STAFF LOGGED IN -->
+                @if(auth('staff')->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="{{ auth('staff')->user()->photo
+                                ? asset('media/staff/'.auth('staff')->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle me-2" width="40" height="40" style="object-fit: cover;">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth('staff')->user()->name }}</span>
+                            <small class="text-info ms-2">(Staff)</small>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="{{ route('staff.dashboard') }}">
+                                <i class="fas fa-briefcase me-2"></i> Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.staff') }}">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout.staff') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                <!-- ADMIN LOGGED IN -->
+                @if(auth('admin')->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="{{ auth('admin')->user()->photo
+                                ? asset('media/admin/'.auth('admin')->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle me-2" width="40" height="40" style="object-fit: cover;">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth('admin')->user()->name }}</span>
+                            <small class="text-danger ms-2">(Admin)</small>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                <i class="fas fa-crown me-2"></i> Admin Panel
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.profile') }}">
+                                <i class="fas fa-user-shield me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('admin.logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+            </ul>
+        </div>
+    </header> --}}
+
+    <header class="navbar navbar-expand-lg navbar-light shadow-sm mb-4" style="background-color: #fff;">
+        <div class="container-fluid">
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('assets/image/logo.png') }}" alt="School Logo" style="height: 60px;">
+            </a>
+
+            <!-- Right Menu -->
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <!-- GUEST: Not logged in -->
+                @if(!auth('student')->check() && !auth('teacher')->check() && !auth('staff')->check())
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary px-4 me-2" href="{{ route('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary px-4" href="{{ route('register') }}">Register</a>
+                    </li>
+                @endif
+
+                <!-- STUDENT LOGGED IN -->
+                @if(auth('student')->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth()->user()->name }}</span>
+                            <small class="text-success ms-2 me-2">(Student)</small>
+                            <img src="{{ auth()->user()->photo
+                                ? asset('media/student/'.auth()->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle " width="40" height="40" style="object-fit: cover;">
+
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2">
+                            <li><a class="dropdown-item" href="{{ route('dashboard') }}">
+                                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item my-2" href="{{ route('profile') }}">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                <!-- TEACHER LOGGED IN -->
+                @if(auth('teacher')->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth('teacher')->user()->name }}</span>
+                            <small class="text-primary ms-2 me-2">(Teacher)</small>
+                            <img src="{{ auth('teacher')->user()->photo
+                                ? asset('media/teacher/'.auth('teacher')->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle " width="40" height="40" style="object-fit: cover;">
+
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2">
+                            <li><a class="dropdown-item" href="{{ route('dashboard.teacher') }}">
+                                <i class="fas fa-chalkboard-teacher me-2"></i> Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item my-2" href="{{ route('profile.teacher') }}">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout.teacher') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                <!-- STAFF LOGGED IN -->
+                @if(auth('staff')->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth('staff')->user()->name }}</span>
+                            <small class="text-info ms-2 me-2">(Staff)</small>
+                            <img src="{{ auth('staff')->user()->photo
+                                ? asset('media/staff/'.auth('staff')->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle " width="40" height="40" style="object-fit: cover;">
+
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2">
+                            <li><a class="dropdown-item" href="{{ route('staff.dashboard') }}">
+                                <i class="fas fa-briefcase me-2"></i> Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item my-2" href="{{ route('profile.staff') }}">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout.staff') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                <!-- ADMIN LOGGED IN -->
+                {{-- @if(auth('admin')->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <span class="d-none d-md-inline fw-semibold">{{ auth('admin')->user()->name }}</span>
+                            <small class="text-danger ms-2 me-2">(Admin)</small>
+                            <img src="{{ auth('admin')->user()->photo
+                                ? asset('media/admin/'.auth('admin')->user()->photo)
+                                : asset('assets/image/default-profile.png') }}"
+                                class="rounded-circle " width="40" height="40" style="object-fit: cover;">
+
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2">
+                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                <i class="fas fa-crown me-2"></i> Admin Panel
+                            </a></li>
+                            <li><a class="dropdown-item my-2" href="{{ route('admin.profile') }}">
+                                <i class="fas fa-user-shield me-2"></i> Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('admin.logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif --}}
+
+            </ul>
+        </div>
     </header>
+
 
     <section>
         @yield('content')

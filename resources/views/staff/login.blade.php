@@ -76,7 +76,7 @@
                         <p class="text-center mt-4 text-muted">
                             Don't have a staff account?
                             <a href="{{ route('register.staff') }}"
-                               class="text-decoration-none fw-semibold text-success">
+                               class="text-decoration-none fw-semibold text-primary">
                                 Register here
                             </a>
                         </p>
